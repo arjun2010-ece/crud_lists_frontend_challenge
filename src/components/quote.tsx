@@ -3,31 +3,32 @@ import { ReactComponent as EditIcon } from "../icons/edit.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { QuoteType } from "./quoteList";
 
-type quoteProps = {
+type QuoteProps = {
   id: string;
   author: string;
   en: string;
   handleDelete: (id: string) => void;
-  handleEdit: (quote: any) => void;
+  handleEdit: (quote: QuoteType) => void;
 };
 
-const Quote: FC<quoteProps> = ({
+const Quote: FC<QuoteProps> = ({
   id,
   author,
   en,
   handleDelete,
   handleEdit,
 }) => {
-  const [open, setOpen] = useState(false);
-  const [quote, setQuote] = useState({
+  const [open, setOpen] = useState<boolean>(false);
+  const [quote, setQuote] = useState<QuoteType>({
     en: "",
     author: "",
-    id: ""
+    id: "",
   });
 
   useEffect(() => {
-    const selectedQuote = { en, author, id };
+    const selectedQuote: QuoteType = { en, author, id };
     setQuote(selectedQuote);
   }, [id]);
 
@@ -45,7 +46,7 @@ const Quote: FC<quoteProps> = ({
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    handleEdit(quote)
+    handleEdit(quote);
     handleCloseModal();
   };
 

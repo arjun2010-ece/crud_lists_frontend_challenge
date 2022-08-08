@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import axios from "axios";
 import Quote from "./quote";
 
-type QuoteType = {
+export type QuoteType = {
   id: string
   en: string
   author: string
