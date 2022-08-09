@@ -30,7 +30,7 @@ const Quote: FC<QuoteProps> = ({
   useEffect(() => {
     const selectedQuote: QuoteType = { en, author, id };
     setQuote(selectedQuote);
-  }, [id]);
+  }, [en, author, id]);
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -50,20 +50,7 @@ const Quote: FC<QuoteProps> = ({
     handleCloseModal();
   };
 
-  return (
-    <>
-      <div className="quote-item">
-        <div className="quote">
-          <h3>"{en}"</h3>
-          <p>{author}</p>
-        </div>
-
-        <div className="icons">
-          <DeleteIcon onClick={() => handleDelete(id)} />
-          <EditIcon onClick={() => handleOpenModal()} />
-        </div>
-      </div>
-      {open && (
+  let editModal =  open && (
         <Modal
           open={open}
           onClose={handleCloseModal}
@@ -105,7 +92,22 @@ const Quote: FC<QuoteProps> = ({
             </button>
           </form>
         </Modal>
-      )}
+      )
+
+  return (
+    <>
+      <div className="quote-item">
+        <div className="quote">
+          <h3>"{en}"</h3>
+          <p>{author}</p>
+        </div>
+
+        <div className="icons">
+          <DeleteIcon onClick={() => handleDelete(id)} />
+          <EditIcon onClick={() => handleOpenModal()} />
+        </div>
+      </div>
+      {editModal}
     </>
   );
 };
