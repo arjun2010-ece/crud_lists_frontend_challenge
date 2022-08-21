@@ -1,9 +1,8 @@
 import { FC, useState, ChangeEvent, SyntheticEvent, useEffect } from "react";
 import { ReactComponent as EditIcon } from "../icons/edit.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
 import { QuoteType } from "./quoteList";
+import Dialog from "./dialog";
 
 type QuoteProps = {
   id: string;
@@ -44,55 +43,11 @@ const Quote: FC<QuoteProps> = ({
     setQuote({ ...quote, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent, q?: QuoteType) => {
     e.preventDefault();
-    handleEdit(quote);
+    handleEdit(q || quote);
     handleCloseModal();
   };
-
-  let editModal =  open && (
-        <Modal
-          open={open}
-          onClose={handleCloseModal}
-          center
-          classNames={{
-            modal: "customModal",
-          }}
-        >
-          <h2 className="title">Edit Quote</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>
-                <b>Enter quote</b>
-              </label>
-              <textarea
-                value={quote.en}
-                name="en"
-                className="form-control"
-                rows={4}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                <b>Author</b>
-              </label>
-              <input
-                value={quote.author}
-                name="author"
-                className="form-control"
-                type="text"
-                onChange={handleChange}
-              />
-            </div>
-
-            <button type="submit" className="add-quote">
-              Submit
-            </button>
-          </form>
-        </Modal>
-      )
 
   return (
     <>
@@ -107,7 +62,16 @@ const Quote: FC<QuoteProps> = ({
           <EditIcon onClick={() => handleOpenModal()} />
         </div>
       </div>
-      {editModal}
+
+      {/* Edit Modal */}
+      <Dialog
+        en={quote.en}
+        author={quote.author}
+        open={open}
+        handleSubmit={handleSubmit}
+        handleCloseModal={handleCloseModal}
+        handleChange={handleChange}
+      />
     </>
   );
 };

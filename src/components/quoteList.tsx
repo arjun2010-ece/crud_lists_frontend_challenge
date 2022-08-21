@@ -1,8 +1,7 @@
 import { ChangeEvent, FC, SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import Quote from "./quote";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
+import Dialog from "./dialog";
 
 export type QuoteType = {
   id: string;
@@ -57,7 +56,6 @@ const QuoteList: FC = () => {
   };
 
   const handleAdd = (quote: QuoteType) => {
-    console.log("ADD");
     setData((prev) => [quote, ...prev]);
   };
 
@@ -73,7 +71,6 @@ const QuoteList: FC = () => {
   };
 
   const handleEdit = (quote: QuoteType) => {
-    console.log(quote);
     const updateQuote: QuoteType = quote;
 
     const updateQuotes: QuoteType[] = data.map((q: QuoteType) => {
@@ -97,57 +94,22 @@ const QuoteList: FC = () => {
       />
     ));
 
-  let addModals = open && (
-    <Modal
-      open={open}
-      onClose={handleCloseModal}
-      center
-      classNames={{
-        modal: "customModal",
-      }}
-    >
-      <h2 className="title">Edit Quote</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>
-            <b>Enter quote</b>
-          </label>
-          <textarea
-            value={quote.en}
-            name="en"
-            className="form-control"
-            rows={4}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>
-            <b>Author</b>
-          </label>
-          <input
-            value={quote.author}
-            name="author"
-            className="form-control"
-            type="text"
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit" className="add-quote">
-          Submit
-        </button>
-      </form>
-    </Modal>
-  );
-
   return (
     <div>
       <h1>Top quotes</h1>
       <button className="add-quote" onClick={handleOpenModal}>
         Add new quote
       </button>
-      {addModals}
+
+      {/* Add Modal} */}
+      <Dialog
+        en={quote.en}
+        author={quote.author}
+        open={open}
+        handleSubmit={handleSubmit}
+        handleCloseModal={handleCloseModal}
+        handleChange={handleChange}
+      />
       {programmingQuotes}
     </div>
   );
